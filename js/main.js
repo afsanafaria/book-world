@@ -9,21 +9,22 @@ loadData = () => {
 
 
     //fetching api
-    fetch(`http://openlibrary.org/search.json?q=${searchText}`)
+    fetch(`https://openlibrary.org/search.json?q=${searchText}`)
         .then(res => res.json())
-        .then(data => displayData(data.docs))
+        .then(data => displayData(data))
 
 }
 
 //display book data
 displayData = books => {
+    const booksList = books.docs;
     const card = document.getElementById('book-list');
     const heading = document.getElementById('heading');
     //text content clear
     card.textContent = '';
 
     //show sorry message
-    if (books == 0) {
+    if (booksList == 0) {
         heading.style.display = 'none';
         document.getElementById('no-result').style.display = 'block';
     }
@@ -32,9 +33,9 @@ displayData = books => {
     else {
         heading.style.display = 'block';
         heading.innerHTML = `
-        <h4>There are ${books.length}books with this name</h4>
+        <h4>There are ${books.numFound} results with this name</h4>
         `;
-        books.forEach(book => {
+        booksList.forEach(book => {
             const div = document.createElement('div');
             div.classList.add('col');
             // image id
